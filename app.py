@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-genai.configure(api_key = "AQ.Ab8RN6JckCX_7a7JUlUEBnUXvPy57G3Z_7B0JGWM-IBNSpZcGw")
+genai.configure(api_key ="api_key")
 model = genai.GenerativeModel("gemini-2.5-flash") 
 
 st.header("Product Requirement Document Generator")
@@ -84,5 +84,12 @@ Use bullet points where appropriate.
   st.write(prd)
   st.download_button("Download prd", prd, file_name=f"{product_name}_prd.txt")
 
-  
+  review_prompt = f"""
+  Review the following product requirment document and provide feedback on how to improve it
+  be specific and blunt in your feedback and also provide suggestions on how to improve it 
+  {prd}
 
+  """
+  review = model.generate_content(review_prompt)
+  st.subheader("Scope of Improvement")
+  st.write(review.text)
